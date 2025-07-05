@@ -34,39 +34,25 @@ const config: ModuleFederationConfig = {
       ? ['section_cards', process.env.SECTION_CARD_REMOTE || 'section_cards']
       : 'section_cards',
   ],
-  // shared: (library, defaultConfig) => {
-  //   // if (['@hookform/resolvers', 'zod'].includes(library)) {
-  //   //   return {
-  //   //     ...defaultConfig,
-  //   //     singleton: true,
-  //   //     strictVersion: false,
-  //   //   };
-  //   // }
-
-  //   if (
-  //     library === '@hookform/resolvers' ||
-  //     library === '@hookform/resolvers/zod'
-  //   ) {
-  //     return {
-  //       ...defaultConfig,
-  //       singleton: true,
-  //       strictVersion: false,
-  //       requiredVersion: '^5.1.1', // ⬅ force it
-  //     };
-  //   }
-
-  //   return defaultConfig;
-  // },
-  additionalShared: [
-    {
-      libraryName: '@hookform/resolvers/zod',
-      sharedConfig: {
-        requiredVersion: '1.0.0',
+  shared: (library, defaultConfig) => {
+    if (
+      library === '@hookform/resolvers' ||
+      library === '@hookform/resolvers/zod'
+    ) {
+      return {
+        ...defaultConfig,
         singleton: true,
         strictVersion: false,
-      },
-    },
-  ],
+        eager: true,
+        requiredVersion: '^5.1.1',
+      };
+    }
+
+    return {
+      ...defaultConfig,
+      eager: true,
+    };
+  },
 };
 
 /**
