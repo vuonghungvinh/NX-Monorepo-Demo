@@ -14,7 +14,15 @@ const config: ModuleFederationConfig = {
    * declare module 'my-external-remote';
    *
    */
-  remotes: ['connections_remote', 'charts', 'section_cards'],
+  // remotes: ['connections_remote', 'charts', 'section_cards'],
+  remotes: [
+    [
+      'connections_remote',
+      process.env.CONNECTION_REMOTE || 'connections_remote',
+    ],
+    ['charts', process.env.CHART_REMOTE || 'charts'],
+    ['section_cards', process.env.SECTION_CARD_REMOTE || 'section_cards'],
+  ],
   shared: (library, defaultConfig) => {
     if (library === '@hookform/resolvers/zod') {
       return {
