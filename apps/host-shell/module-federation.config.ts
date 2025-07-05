@@ -1,5 +1,10 @@
 import { ModuleFederationConfig } from '@nx/module-federation';
 
+console.log(
+  '[shell] @hookform/resolvers version:',
+  require('@hookform/resolvers/package.json').version
+);
+
 const config: ModuleFederationConfig = {
   name: 'host-shell',
   /**
@@ -16,23 +21,52 @@ const config: ModuleFederationConfig = {
    */
   // remotes: ['connections_remote', 'charts', 'section_cards'],
   remotes: [
-    [
-      'connections_remote',
-      process.env.CONNECTION_REMOTE || 'connections_remote',
-    ],
-    ['charts', process.env.CHART_REMOTE || 'charts'],
-    ['section_cards', process.env.SECTION_CARD_REMOTE || 'section_cards'],
+    process.env.CONNECTION_REMOTE
+      ? [
+          'connections_remote',
+          process.env.CONNECTION_REMOTE || 'connections_remote',
+        ]
+      : 'connections_remote',
+    process.env.CHART_REMOTE
+      ? ['charts', process.env.CHART_REMOTE || 'charts']
+      : 'charts',
+    process.env.SECTION_CARD_REMOTE
+      ? ['section_cards', process.env.SECTION_CARD_REMOTE || 'section_cards']
+      : 'section_cards',
   ],
-  shared: (library, defaultConfig) => {
-    if (library === '@hookform/resolvers/zod') {
-      return {
-        ...defaultConfig,
-        strictVersion: false,
-      };
-    }
+  // shared: (library, defaultConfig) => {
+  //   // if (['@hookform/resolvers', 'zod'].includes(library)) {
+  //   //   return {
+  //   //     ...defaultConfig,
+  //   //     singleton: true,
+  //   //     strictVersion: false,
+  //   //   };
+  //   // }
 
-    return defaultConfig;
-  },
+  //   if (
+  //     library === '@hookform/resolvers' ||
+  //     library === '@hookform/resolvers/zod'
+  //   ) {
+  //     return {
+  //       ...defaultConfig,
+  //       singleton: true,
+  //       strictVersion: false,
+  //       requiredVersion: '^5.1.1', // ⬅ force it
+  //     };
+  //   }
+
+  //   return defaultConfig;
+  // },
+  additionalShared: [
+    {
+      libraryName: '@hookform/resolvers/zod',
+      sharedConfig: {
+        requiredVersion: '1.0.0',
+        singleton: true,
+        strictVersion: false,
+      },
+    },
+  ],
 };
 
 /**
