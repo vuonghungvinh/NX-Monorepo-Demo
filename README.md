@@ -1,77 +1,66 @@
-# Dashboard
+# Monorepo using NX
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## To create a new host-shell app
+ ```sh
+ nx g @nx/react:host --name=name-host-app --bundler=rspack --style=css --directory=apps/name-host-app --e2eTestRunner=none
+ ```
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+After creating update the remotes and shared properties of the module-federation.config.ts file, similar to the apps/host-shell/module-federation.config.ts file, to make  it work with building
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
-
-## Finish your remote caching setup
-
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/XR5PcPugXB)
-
-
-## Run tasks
-
-To run tasks with Nx use:
-
+## To create a new remote app
 ```sh
-npx nx <target> <project-name>
+nx g @nx/react:remote --name=remote_app_name --host=host-shell --bundler=rspack --directory=apps/remote-app-name --style=css --e2eTestRunner=none
 ```
 
-For example:
+After creating update the module-federation.config.ts file similar to the host-shell app
 
+And after creating a new host or remote app, copy the tailwind.config.cjs, and postcss.config.cjs files from an existing app to the new app, and update the path if needed. Note: don't add any new styles in that file, we will update the style in the common file: lib/shared/ui/tailwind.config.cjs
+
+## To generate a library
 ```sh
-npx nx build myproject
+nx g @nx/react:lib --name=name-ui --directory=libs/shared/name-ui --importPath=@libs/shared/name-ui --style=css --builder=none
+```
+Currently, we have 2 libs are ui and theme.
+
+- The theme will allow change mode: dark, light, and system, and update the color for each mode.
+- UI: Where we will update or add new styles(update in the lib/shared/ui/tailwind.config.cjs or lib/shared/ui/src/lib/styles.css files), and where we will put the common components, such as Shadcn's components, custom InputText for form.
+
+## To run app
+- To run an app
+```sh
+nx run app-name:serve
+```
+- To run some apps
+```sh
+nx run-many --target=serve --projects=app1,app2,app3 --parallel
+```
+Currently, to run the host app, just run this command
+```sh
+npm start
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
+## To build app
 ```sh
-npx nx add @nx/react
+nx build app_name
 ```
+Using flag --skip-nx-cache, if you want to skip caching
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
-
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
-
-# Generate a library
-npx nx g @nx/react:lib some-lib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Deploying
+After deploying remote apps, update the remoteEntry.js url of that app for the host app
+ex: CHART_REMOTE: char_remote_url/remoteEntry.js
+Check the remotes property in the apps/host-shell/module-federation.config.ts file
 
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## To scale an Nx monorepo with additional remotes, I would:
 
-## Install Nx Console
+- Use Nx generators to scaffold new remotes (nx g @nx/react:remote)
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+- Register new remotes in the host’s module-federation.config.ts
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Extract shared code into libraries under libs/shared/ui
 
-## Useful links
+- Configure dynamic loading or remote URLs via env. Check the apps/host-shell/module-federation.config.ts file
 
-Learn more:
+- Leverage Nx caching and parallel builds for CI
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Deploy remotes independently and connect via URLs
