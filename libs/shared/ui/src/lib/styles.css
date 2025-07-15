@@ -116,19 +116,7 @@
 }
 
 .blue {
-  /* --background: oklch(1 0 0); */
-  --background: radial-gradient(
-      1200px 1200px at 80% 10%,
-      rgba(18, 96, 125, 0.9) 0%,
-      rgba(18, 96, 125, 0.15) 40%,
-      transparent 70%
-    ),
-    radial-gradient(
-      1500px 1500px at 20% 100%,
-      rgba(18, 96, 125, 0.5) 0%,
-      transparent 70%
-    ),
-    linear-gradient(120deg, #0d3e51 0%, #00131a 100%);
+  --background: transparent;
   --foreground: oklch(1 0 0);
   --card: oklch(100% 0.00011 271.152 / 0.812);
   --card-foreground: oklch(0.3211 0 0);
@@ -152,18 +140,7 @@
   --chart-3: oklch(0.4882 0.2172 264.3763);
   --chart-4: oklch(0.4244 0.1809 265.6377);
   --chart-5: oklch(0.3791 0.1378 265.5222);
-  --sidebar: radial-gradient(
-      1200px 1200px at 80% 10%,
-      rgba(18, 96, 125, 0.9) 0%,
-      rgba(18, 96, 125, 0.15) 40%,
-      transparent 70%
-    ),
-    radial-gradient(
-      1500px 1500px at 20% 100%,
-      rgba(18, 96, 125, 0.5) 0%,
-      transparent 70%
-    ),
-    linear-gradient(120deg, #0d3e51 0%, #00131a 100%);
+  --sidebar: transparent;
   --sidebar-foreground: oklch(1 0 0);
   --sidebar-primary: oklch(0.6231 0.188 259.8145);
   --sidebar-primary-foreground: oklch(1 0 0);
@@ -242,6 +219,22 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+}
+
+@utility bg-blue-bg {
+  background: radial-gradient(
+      1200px 1200px at 80% 10%,
+      rgba(18, 96, 125, 0.9) 0%,
+      rgba(18, 96, 125, 0.15) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      1500px 1500px at 20% 100%,
+      rgba(18, 96, 125, 0.5) 0%,
+      transparent 70%
+    ),
+    linear-gradient(120deg, #0d3e51 0%, #00131a 100%);
+  @apply bg-no-repeat bg-cover bg-fixed;
 }
 
 .input-error {
