@@ -1,4 +1,5 @@
 @import 'tailwindcss' source('../../../');
+@source "../../src";
 @source "../../../libs/shared/ui";
 @source "../../../libs/shared/theme";
 @source "../../../apps/charts/src";
@@ -115,9 +116,21 @@
 }
 
 .blue {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.3211 0 0);
-  --card: oklch(1 0 0);
+  /* --background: oklch(1 0 0); */
+  --background: radial-gradient(
+      1200px 1200px at 80% 10%,
+      rgba(18, 96, 125, 0.9) 0%,
+      rgba(18, 96, 125, 0.15) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      1500px 1500px at 20% 100%,
+      rgba(18, 96, 125, 0.5) 0%,
+      transparent 70%
+    ),
+    linear-gradient(120deg, #0d3e51 0%, #00131a 100%);
+  --foreground: oklch(1 0 0);
+  --card: oklch(100% 0.00011 271.152 / 0.812);
   --card-foreground: oklch(0.3211 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.3211 0 0);
@@ -139,8 +152,19 @@
   --chart-3: oklch(0.4882 0.2172 264.3763);
   --chart-4: oklch(0.4244 0.1809 265.6377);
   --chart-5: oklch(0.3791 0.1378 265.5222);
-  --sidebar: oklch(0.9846 0.0017 247.8389);
-  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar: radial-gradient(
+      1200px 1200px at 80% 10%,
+      rgba(18, 96, 125, 0.9) 0%,
+      rgba(18, 96, 125, 0.15) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      1500px 1500px at 20% 100%,
+      rgba(18, 96, 125, 0.5) 0%,
+      transparent 70%
+    ),
+    linear-gradient(120deg, #0d3e51 0%, #00131a 100%);
+  --sidebar-foreground: oklch(1 0 0);
   --sidebar-primary: oklch(0.6231 0.188 259.8145);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.9514 0.025 236.8242);
